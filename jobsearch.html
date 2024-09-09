@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graduate Job Search</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css_styles/jobsearch.css">
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js';
+        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGY81BYjo_NIxReP0aQ3Mcq0cqvSDXO7g",
+            authDomain: "postjob-4a284.firebaseapp.com",
+            projectId: "postjob-4a284",
+            storageBucket: "postjob-4a284.appspot.com",
+            messagingSenderId: "838501268737",
+            appId: "1:838501268737:web:22238041ac2c8610f0af00",
+            measurementId: "G-T733CNHE3K"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Fetch job listings from Firestore
+        async function loadJobListings() {
+            const jobListingsContainer = document.getElementById('jobListings');
+            const jobCollection = collection(db, 'jobs');
+            const jobSnapshot = await getDocs(jobCollection);
+
+            jobListingsContainer.innerHTML = ''; // Clear existing content
+
+            jobSnapshot.forEach(doc => {
+                const job = doc.data();
+                const jobElement = document.createElement('div');
+                jobElement.classList.add('col-md-4', 'mb-4');
+                jobElement.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                            <h4 class="card-title">${job.title}</h4>
+                            <p class="card-text">${job.description}</p>
+                            <p><strong>Company:</strong> ${job.company}</p>
+                            <p><strong>Location:</strong> ${job.location}</p>
+                            <p><strong>Skills Required:</strong> ${job.skills}</p>
+                            <a href="view-job.html?jobId=${doc.id}" class="btn btn-outline-primary mt-3">View Details</a>
+                            <a href="job.html?jobId=${doc.id}" class="btn btn-primary mt-2">Apply Now</a>
+                        </div>
+                    </div>
+                `;
+                jobListingsContainer.appendChild(jobElement);
+            });
+        }
+
+        // Load job listings when the page loads
+        window.onload = loadJobListings;
+    </script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="bg-primary text-white text-center py-3">
+        <h1 class="h3">Graduate Job Search</h1>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="container search-bar">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form class="form-inline">
+                    <input class="form-control col-md-9" type="search" placeholder="Search for jobs by title, company, or skills..." aria-label="Search">
+                    <button class="btn btn-primary col-md-3" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Listings -->
+    <div class="container job-listings">
+        <div class="row" id="jobListings">
+            <!-- Job items will be inserted here dynamically -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

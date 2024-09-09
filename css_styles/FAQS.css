@@ -1,0 +1,25 @@
+
+.faq {
+    margin-top: 2rem;
+}
+
+.accordion-button {
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.accordion-body {
+    background-color: #f8f9fa;
+}

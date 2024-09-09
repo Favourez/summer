@@ -1,0 +1,30 @@
+/* Contact Us Page Styles */
+.contact-us {
+    margin-top: 2rem;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.btn {
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #333333;
+}

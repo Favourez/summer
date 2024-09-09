@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Jobs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .header-container nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .header-container nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .header-container nav a:hover {
+            background-color: #0056b3;
+            border-radius: 5px;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .manage-jobs {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .update-container, .delete-container {
+            margin-top: 20px;
+        }
+
+        #jobList {
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <nav>
+                <a href="#profile">Profile</a>
+                <a href="#manage-jobs">Manage Jobs</a>
+                <a href="#review-cvs">Review CVs</a>
+                <a href="#about-us">About Us</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="manage-jobs">
+            <h1>Manage Jobs</h1>
+            <div class="form-container">
+                <form id="jobForm">
+                    <input type="text" id="jobTitle" placeholder="Job Title" required>
+                    <textarea id="jobDescription" placeholder="Job Description" required></textarea>
+                    <input type="text" id="jobLocation" placeholder="Job Location" required>
+                    <button type="submit">Post Job</button>
+                </form>
+                <div class="update-container">
+                    <input type="text" id="jobIdToUpdate" placeholder="Job ID to Update" required>
+                    <input type="text" id="newJobTitle" placeholder="New Job Title">
+                    <textarea id="newJobDescription" placeholder="New Job Description"></textarea>
+                    <input type="text" id="newJobLocation" placeholder="New Job Location">
+                    <button id="updateJobBtn">Update Job</button>
+                </div>
+                <div class="delete-container">
+                    <input type="text" id="jobIdToDelete" placeholder="Job ID to Delete" required>
+                    <button id="deleteJobBtn">Delete Job</button>
+                </div>
+            </div>
+            <div id="jobList"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Your Company</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDpLstb5cYnI-Xv8JAla0iop0WaTdscU2M",
+            authDomain: "jobdatabase-3ff04.firebaseapp.com",
+            databaseURL: "https://jobdatabase-3ff04-default-rtdb.firebaseio.com",
+            projectId: "jobdatabase-3ff04",
+            storageBucket: "jobdatabase-3ff04.appspot.com",
+            messagingSenderId: "274219241876",
+            appId: "1:274219241876:web:7166c3712c43d0af493f81",
+            measurementId: "G-MERSHYBGP5"
+        };
+
+        // Initialize Firebase
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js';
+        import { getDatabase, ref, set, update, remove, onValue } from 'https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js';
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Add job
+        document.getElementById('jobForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('jobTitle').value;
+            const description = document.getElementById('jobDescription').value;
+            const location = document.getElementById('jobLocation').value;
+
+            const newJobRef = ref(database, 'jobs/' + Date.now());
+            set(newJobRef, {
+                title,
+                description,
+                location
+            }).then(() => {
+                alert('Job posted successfully!');
+                document.getElementById('jobForm').reset();
+                loadJobs();
+            }).catch(error => {
+                console.error('Error posting job:', error);
+            });
+        });
+
+        // Update job
+        document.getElementById('updateJobBtn').addEventListener('click', function() {
+            const jobId = document.getElementById('jobIdToUpdate').value;
+            const title = document.getElementById('newJobTitle').value;
+            const description = document.getElementById('newJobDescription').value;
+            const location = document.getElementById('newJobLocation').value;
+
+            const jobRef = ref(database, 'jobs/' + jobId);
+            update(jobRef, {
+                title,
+                description,
+                location
+            }).then(() => {
+                alert('Job updated successfully!');
+                loadJobs();
+            }).catch(error => {
+                console.error('Error updating job:', error);
+            });
+        });
+
+        // Delete job
+        document.getElementById('deleteJobBtn').addEventListener('click', function() {
+            const jobId = document.getElementById('jobIdToDelete').value;
+
+            const jobRef = ref(database, 'jobs/' + jobId);
+            remove(jobRef).then(() => {
+                alert('Job deleted successfully!');
+                loadJobs();
+            }).catch(error => {
+                console.error('Error deleting job:', error);
+            });
+        });
+
+        // Load jobs
+        function loadJobs() {
+            const jobList = document.getElementById('jobList');
+            jobList.innerHTML = '';
+
+            const jobsRef = ref(database, 'jobs');
+            onValue(jobsRef, (snapshot) => {
+                const jobs = snapshot.val();
+                if (jobs) {
+                    for (const id in jobs) {
+                        const job = jobs[id];
+                        jobList.innerHTML += `
+                            <div class="job-item">
+                                <h3>${job.title}</h3>
+                                <p>${job.description}</p>
+                                <p><strong>Location:</strong> ${job.location}</p>
+                                <p><strong>ID:</strong> ${id}</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    jobList.innerHTML = '<p>No jobs available</p>';
+                }
+            });
+        }
+
+        // Load jobs on page load
+        loadJobs();
+    </script>
+</body>
+</html>

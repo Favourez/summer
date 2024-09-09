@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Life</title>
+    <link rel="stylesheet" href="css_styles/sociallife.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Social Life</h1>
+        
+        <p class="intro-text">Connect with friends and build your social network easily.</p>
+
+        <form id="addFriendForm">
+            <div class="form-group">
+                <label for="friend-name">Friend's Name:</label>
+                <input type="text" id="friend-name" placeholder="Friend's Name" required>
+            </div>
+            <div class="form-group">
+                <label for="friend-email">Friend's Email:</label>
+                <input type="email" id="friend-email" placeholder="Friend's Email" required>
+            </div>
+            <input type="submit" value="Add Friend" class="sub">
+            <p id="error-message" style="color: red; display: none;">No user credentials found</p>
+        </form>
+
+        <p class="info-text">Your friend requests will be stored in our database.</p>
+
+        <div class="registered-users">
+            <h2>Registered Users</h2>
+            <ul id="userList"></ul>
+        </div>
+        
+        <div class="move-to-inbox">
+            <button id="moveToInbox" class="button">Move to Inbox</button>
+        </div>
+    </div>
+
+
+    <script type="module">
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+        import { getFirestore, collection, addDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+        
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANPZCQca7GMP-qo22enU9YNkKpv3K_l_w",
+            authDomain: "online-student0.firebaseapp.com",
+            projectId: "online-student0",
+            storageBucket: "online-student0.appspot.com",
+            messagingSenderId: "496631888807",
+            appId: "1:496631888807:web:1f224b92008fd593629482",
+            measurementId: "G-13MNSLYD05"
+        };
+
+    
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const firestore = getFirestore(app);
+
+        function fetchRegisteredUsers() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = ''; 
+
+            const userRef = ref(database, 'users');
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        const user = childSnapshot.val();
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${user.username} (${user.email})`;
+                        userList.appendChild(listItem);
+                    });
+                }
+            });
+        }
+      document.addEventListener('DOMContentLoaded', fetchRegisteredUsers);
+
+
+        document.getElementById('addFriendForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const friendName = document.getElementById('friend-name').value;
+            const friendEmail = document.getElementById('friend-email').value;
+
+            // Get the current user's email
+            const currentUser = auth.currentUser;
+            if (!currentUser) {
+                alert('You must be logged in to send friend requests.');
+                return;
+            }
+            const senderEmail = currentUser.email;
+
+            // Check if the recipient exists in Realtime Database
+            const usersRef = ref(database, 'users');
+            const snapshot = await get(usersRef);
+            let recipientExists = false;
+
+            if (snapshot.exists()) {
+                snapshot.forEach((childSnapshot) => {
+                    const user = childSnapshot.val();
+                    if (user.email === friendEmail) {
+                        recipientExists = true;
+                    }
+                });
+            }
+
+            if (recipientExists) {
+                // Store the friend request in Firestore
+                try {
+                    await addDoc(collection(firestore, 'friendRequests'), {
+                        senderEmail: senderEmail,
+                        recipientEmail: friendEmail,
+                        friendName: friendName,
+                        status: 'pending', 
+                        timestamp: new Date()
+                    });
+                    alert('Friend request sent!');
+                    document.getElementById('addFriendForm').reset();
+                } catch (error) {
+                    console.error('Error adding friend request: ', error);
+                }
+            } else {
+                // Display error message if the recipient is not found
+                document.getElementById('error-message').style.display = 'block';
+            }
+        });
+
+        // Redirect to inbox.html when the button is clicked
+        document.getElementById('moveToInbox').addEventListener('click', () => {
+            window.location.href = 'inbox.html';
+        });
+    </script>
+    <footer>
+        <p>&copy; 2024 Our Company. All rights reserved.</p>
+    </footer>
+</body>
+</html>

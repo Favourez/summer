@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+    <link rel="stylesheet" href="css_styles/inbox.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-title">Inbox</div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search messages...">
+                <button type="button"><i class="fas fa-search"></i></button>
+            </div>
+        </header>
+        <div class="contact-selector">
+            <input type="text" id="contactSearch" placeholder="Search contacts...">
+            <select id="contactDropdown">
+                <option value="">Select Contact</option>
+                <!-- Options will be populated dynamically -->
+                <option value="recipient@example.com">Recipient Name (recipient@example.com)</option>
+            </select>
+        </div>
+
+        <div class="send-message">
+            <form id="sendMessageForm">
+                <div class="form-group">
+                    <label for="messageContent">Message:</label>
+                    <textarea id="messageContent" placeholder="Type your message here..." required></textarea>
+                </div>
+                <input type="submit" value="Send Message" class="button">
+            </form>
+        </div>
+        <div> </div>
+        <div class="message-list" id="messageList">
+            <!-- Sample message item -->
+            <div class="message-item">
+                <div class="message-sender">joannesfloats@gmail.com</div>
+                <div class="message-preview">Yh thanks ... lol</div>
+                <div class="message-time">2024-08-21 14:32</div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyANPZCQca7GMP-qo22enU9YNkKpv3K_l_w",
+            authDomain: "online-student0.firebaseapp.com",
+            projectId: "online-student0",
+            storageBucket: "online-student0.appspot.com",
+            messagingSenderId: "496631888807",
+            appId: "1:496631888807:web:1f224b92008fd593629482",
+            measurementId: "G-13MNSLYD05"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+        const firestore = getFirestore(app);
+
+        // Fetch registered users and display them in the dropdown
+        function fetchUsers() {
+            const contactDropdown = document.getElementById('contactDropdown');
+            const contactSearch = document.getElementById('contactSearch');
+
+            const userRef = ref(database, 'users');
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    contactDropdown.innerHTML = '<option value="">Select Contact</option>'; // Reset dropdown
+                    snapshot.forEach((childSnapshot) => {
+                        const user = childSnapshot.val();
+                        const option = document.createElement('option');
+                        option.value = user.email;
+                        option.textContent = `${user.username} (${user.email})`;
+                        contactDropdown.appendChild(option);
+                    });
+                }
+            });
+
+            contactSearch.addEventListener('input', function() {
+                const searchText = contactSearch.value.toLowerCase();
+                const options = contactDropdown.querySelectorAll('option');
+                options.forEach(option => {
+                    const text = option.textContent.toLowerCase();
+                    option.style.display = text.includes(searchText) ? 'block' : 'none';
+                });
+            });
+        }
+
+        // Fetch messages
+        function fetchMessages() {
+            const messageList = document.getElementById('messageList');
+
+            const messageRef = ref(database, 'messages');
+            get(messageRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    messageList.innerHTML = ''; // Clear existing messages
+                    snapshot.forEach((childSnapshot) => {
+                        const message = childSnapshot.val();
+                        const messageItem = document.createElement('div');
+                        messageItem.className = 'message-item';
+                        messageItem.innerHTML = `
+                            <div class="message-sender">${message.sender}</div>
+                            <div class="message-preview">${message.content}</div>
+                            <div class="message-time">${message.timestamp}</div>
+                        `;
+                        messageList.appendChild(messageItem);
+                    });
+                }
+            });
+        }
+
+        document.getElementById('sendMessageForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const messageContent = document.getElementById('messageContent').value;
+            const contactDropdown = document.getElementById('contactDropdown');
+            const recipientEmail = contactDropdown.value;
+
+            if (!recipientEmail) {
+                alert('Please select a contact.');
+                return;
+            }
+
+            // Get the current user's email
+            const currentUser = auth.currentUser;
+            if (!currentUser) {
+                alert('You must be logged in to send messages.');
+                return;
+            }
+            const senderEmail = currentUser.email;
+            const subject = encodeURIComponent('New Message from ' + senderEmail);
+            const body = encodeURIComponent(`Hello,\n\nYou have received a new message from ${senderEmail}:\n\n${messageContent}`);
+            const mailtoLink = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+
+            window.location.href = mailtoLink; 
+            document.getElementById('sendMessageForm').reset();
+        });
+
+        // Initialize
+        fetchUsers();
+        fetchMessages();
+    </script>
+</body>
+</html>

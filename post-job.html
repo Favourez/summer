@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Job</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css_styles/dashboard.css">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1 class="h3 text-center">Post a New Job</h1>
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="companydashboard.html">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="post-job.html">Post Job</a></li>
+                            <li class="nav-item"><a class="nav-link" href="review-applications.html">Review Applications</a></li>
+                            <li class="nav-item"><a class="nav-link" href="view-job.html">View Job</a></li>
+                            <li class="nav-item"><a class="nav-link" href="index.html">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container my-4">
+        <section>
+            <h2 class="text-center">Post a New Job Listing</h2>
+            <form id="postJobForm">
+                <div class="mb-3">
+                    <label for="jobTitle" class="form-label">Job Title</label>
+                    <input type="text" class="form-control" id="jobTitle" required>
+                </div>
+                <div class="mb-3">
+                    <label for="jobDescription" class="form-label">Job Description</label>
+                    <textarea class="form-control" id="jobDescription" rows="5" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="jobLocation" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="jobLocation" required>
+                </div>
+                <div class="mb-3">
+                    <label for="jobType" class="form-label">Job Type</label>
+                    <select class="form-select" id="jobType" required>
+                        <option value="">Select Type</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="jobSalary" class="form-label">Salary</label>
+                    <input type="text" class="form-control" id="jobSalary" required>
+                </div>
+                <div class="mb-3">
+                    <label for="qualification1" class="form-label">Key Qualification 1</label>
+                    <input type="text" class="form-control" id="qualification1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="qualification2" class="form-label">Key Qualification 2</label>
+                    <input type="text" class="form-control" id="qualification2" required>
+                </div>
+                <div class="mb-3">
+                    <label for="qualification3" class="form-label">Key Qualification 3</label>
+                    <input type="text" class="form-control" id="qualification3" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Post Job</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2024 ICTU Graduate Portal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase and Firestore script -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGY81BYjo_NIxReP0aQ3Mcq0cqvSDXO7g",
+            authDomain: "postjob-4a284.firebaseapp.com",
+            projectId: "postjob-4a284",
+            storageBucket: "postjob-4a284.appspot.com",
+            messagingSenderId: "838501268737",
+            appId: "1:838501268737:web:22238041ac2c8610f0af00",
+            measurementId: "G-T733CNHE3K"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Handle Form Submission
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('postJobForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                // Get form values
+                const jobTitle = document.getElementById('jobTitle').value;
+                const jobDescription = document.getElementById('jobDescription').value;
+                const jobLocation = document.getElementById('jobLocation').value;
+                const jobType = document.getElementById('jobType').value;
+                const jobSalary = document.getElementById('jobSalary').value;
+                const qualification1 = document.getElementById('qualification1').value;
+                const qualification2 = document.getElementById('qualification2').value;
+                const qualification3 = document.getElementById('qualification3').value;
+
+                try {
+                    // Save to Firestore
+                    await addDoc(collection(db, 'jobs'), {
+                        title: jobTitle,
+                        description: jobDescription,
+                        location: jobLocation,
+                        type: jobType,
+                        salary: jobSalary,
+                        qualifications: [qualification1, qualification2, qualification3],
+                        postedAt: serverTimestamp()
+                    });
+                    alert('Job posted successfully!');
+                    document.getElementById('postJobForm').reset();
+                } catch (error) {
+                    console.error('Error posting job: ', error);
+                    alert('Error posting job. Please try again.');
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

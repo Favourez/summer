@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up</title>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <link rel="stylesheet" href="css_styles/signup.css">
+</head>
+<body>
+  <div class="signup-container">
+    <div class="form-container">
+      <h1>Sign Up</h1>
+      
+      <!-- New Text Element Before the Username Field -->
+      <p class="intro-text">Make the most of your Professional life and Encounter</p>
+
+      <form id="signupForm">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        
+        <!-- New Text Element Before the Submit Button -->
+        <p class="terms-text">By clicking signup you agree to our <a href="terms.html" target="_blank">Terms and Policies</a>.</p>
+
+        <div class="g-recaptcha" data-sitekey="6LfPTDoqAAAAALwy7v6rc91b5PBx_rOK8PR510jG"></div>
+        
+        <div> </div>
+        <input type="submit" value="SUBMIT" class="sub" id="submit">
+      </form>
+    </div>
+
+    <div class="image-container">
+      <img src="assets/signup.png" alt="Sign Up Image">
+    </div>
+  </div>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-database.js";
+    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-functions.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyANPZCQca7GMP-qo22enU9YNkKpv3K_l_w",
+      authDomain: "online-student0.firebaseapp.com",
+      projectId: "online-student0",
+      storageBucket: "online-student0.appspot.com",
+      messagingSenderId: "496631888807",
+      appId: "1:496631888807:web:1f224b92008fd593629482",
+      measurementId: "G-13MNSLYD05"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+    const functions = getFunctions(app);
+
+    document.getElementById("signupForm").addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match. Please try again.");
+        return;
+      }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          set(ref(database, 'users/' + user.uid), {
+            username: username,
+            email: email,
+            uid: user.uid
+          })
+          .then(() => {
+            alert("Successful registration");
+
+            // Call Cloud Function to send email
+            const sendEmail = httpsCallable(functions, 'sendEmail');
+            sendEmail({ username, email, password })
+              .then(result => {
+                console.log('Email sent successfully:', result);
+              })
+              .catch(error => {
+                console.error('Error sending email:', error);
+              });
+
+            window.location.href = 'login.html';
+          })
+          .catch((error) => {
+            console.error("Error writing to database: ", error);
+          });
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          alert(`Error: ${errorMessage}`);
+        });
+    });
+  </script>
+  
+  <footer>
+    <p>&copy; 2024 S-Life. All rights reserved.</p>
+  </footer>
+</body>
+</html>

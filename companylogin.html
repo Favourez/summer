@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="css_styles/login.css">
+</head>
+<body>
+    <div class="signup-container">
+        <div class="form-container">
+            <h1>Login Page</h1>
+            <form id="loginForm">
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div class="g-recaptcha" data-sitekey="6LfPTDoqAAAAALwy7v6rc91b5PBx_rOK8PR510jG"></div>
+                <button type="submit" class="sub">Login</button>
+                <br><br>
+                <a href="#" id="forgotPassword">Forgot Password?</a>
+            </form>
+        </div>
+
+    </div>
+
+    <footer>
+        © 2024 S-Life. All rights reserved.
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js';
+        import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js';
+        
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7Rhm-yiHtT7Jb3VLboyehhJTdhAVXd3w",
+            authDomain: "company-b9c4c.firebaseapp.com",
+            projectId: "company-b9c4c",
+            storageBucket: "company-b9c4c.appspot.com",
+            messagingSenderId: "384288982806",
+            appId: "1:384288982806:web:191acbf1b12f75a8b0f237",
+            measurementId: "G-KK2299X096"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Login with email and password
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    alert('Login successful');
+                    window.location.href = 'companydashboard.html'; // Redirect to the homepage
+                })
+                .catch((error) => {
+                    // Error handling
+                    const errorMessage = error.message;
+                    alert(`Error: ${errorMessage}`);
+                });
+        });
+
+        // Forgot Password
+        document.getElementById('forgotPassword').addEventListener('click', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+
+            if (email) {
+                sendPasswordResetEmail(auth, email)
+                    .then(() => {
+                        alert('Password reset email sent. Please check your inbox.');
+                    })
+                    .catch((error) => {
+                        const errorMessage = error.message;
+                        alert(`Error: ${errorMessage}`);
+                    });
+            } else {
+                alert('Please enter your email to reset your password.');
+            }
+        });
+
+    </script>
+</body>
+</html>

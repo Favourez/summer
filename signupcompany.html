@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Registration</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="css_styles/company.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Company Registration</h1>
+        <form id="companyForm">
+            <input type="text" id="companyName" placeholder="Company Name" required>
+            <input type="text" id="companyLocation" placeholder="Location" required>
+            <input type="text" id="companyAddress" placeholder="Address" required>
+            <input type="email" id="companyEmail" placeholder="Email" required>
+            <input type="password" id="companyPassword" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <textarea id="companyDescription" placeholder="Brief Description" required></textarea>
+            <div class="g-recaptcha" data-sitekey="6LfPTDoqAAAAALwy7v6rc91b5PBx_rOK8PR510jG"></div>
+            <button type="submit" class="button">Register</button>
+        </form>
+        <p id="errorMessage"></p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+        import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+        import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7Rhm-yiHtT7Jb3VLboyehhJTdhAVXd3w",
+            authDomain: "company-b9c4c.firebaseapp.com",
+            projectId: "company-b9c4c",
+            storageBucket: "company-b9c4c.appspot.com",
+            messagingSenderId: "384288982806",
+            appId: "1:384288982806:web:191acbf1b12f75a8b0f237",
+            measurementId: "G-KK2299X096"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        document.getElementById('companyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const companyName = document.getElementById('companyName').value;
+            const companyLocation = document.getElementById('companyLocation').value;
+            const companyAddress = document.getElementById('companyAddress').value;
+            const companyEmail = document.getElementById('companyEmail').value;
+            const companyPassword = document.getElementById('companyPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const companyDescription = document.getElementById('companyDescription').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (companyPassword !== confirmPassword) {
+                errorMessage.textContent = 'Passwords do not match!';
+                return;
+            }
+
+            try {
+                // Create user with email and password
+                const userCredential = await createUserWithEmailAndPassword(auth, companyEmail, companyPassword);
+
+                // Save company details to Firestore
+                await addDoc(collection(db, 'companies'), {
+                    name: companyName,
+                    location: companyLocation,
+                    address: companyAddress,
+                    email: companyEmail,
+                    description: companyDescription,
+                    userId: userCredential.user.uid // Store the user ID
+                });
+
+                // Show success message
+                errorMessage.textContent = 'Company registered successfully!';
+                errorMessage.style.color = 'green';
+                document.getElementById('companyForm').reset();
+
+                // Redirect to company login page after successful signup
+                window.location.href = 'companylogin.html';
+            } catch (error) {
+                console.error('Error registering company:', error); // Log detailed error to console
+                errorMessage.textContent = 'Error registering company: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

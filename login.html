@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Page</title>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <link rel="stylesheet" href="css_styles/login.css">
+</head>
+<body>
+  <div class="signup-container">
+    <div class="form-container">
+      <h1>Login Page</h1>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <div class="g-recaptcha" data-sitekey="6LfPTDoqAAAAALwy7v6rc91b5PBx_rOK8PR510jG"></div>
+        <input type="submit" value="Submit" class="sub" id="submit">
+        <a href="#" onclick="loginWithGoogle()" class="button">Login with Google</a>
+        <br><br>
+        <a href="#" id="forgotPassword">Forgot Password?</a>
+      </form>
+    </div>
+
+    <div class="image-container">
+      <img src="assets/signup.png" alt="Descriptive Image Text">
+    </div>
+
+  </div>
+
+  <footer>
+    © 2024 S-Life. All rights reserved.
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+    
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyANPZCQca7GMP-qo22enU9YNkKpv3K_l_w",
+      authDomain: "online-student0.firebaseapp.com",
+      projectId: "online-student0",
+      storageBucket: "online-student0.appspot.com",
+      messagingSenderId: "496631888807",
+      appId: "1:496631888807:web:1f224b92008fd593629482",
+      measurementId: "G-13MNSLYD05"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Login with email and password
+    document.getElementById("loginForm").addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const username = document.getElementById("username").value;
+
+      if (password === confirmPassword) {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in successfully
+            alert("Login successful");
+            sessionStorage.setItem('username', username); // Store username in session storage
+            window.location.href = 'homepage.html';
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(`Error: ${errorMessage}`);
+          });
+      } else {
+        alert("Passwords do not match. Please try again.");
+      }
+    });
+
+    // Forgot Password
+    document.getElementById("forgotPassword").addEventListener('click', function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+
+      if (email) {
+        sendPasswordResetEmail(auth, email)
+          .then(() => {
+            alert("Password reset email sent. Please check your inbox.");
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert(`Error: ${errorMessage}`);
+          });
+      } else {
+        alert("Please enter your email to reset your password.");
+      }
+    });
+
+    // Login with Google
+    function loginWithGoogle() {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider)
+        .then((result) => {
+          // Google login successful
+          alert("Login with Google successful");
+          window.location.href = 'homepage.html';
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(`Error: ${errorMessage}`);
+        });
+    }
+  </script>
+</body>
+</html>

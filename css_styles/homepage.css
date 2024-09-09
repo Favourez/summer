@@ -1,0 +1,350 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+}
+
+header {
+    background-color: #000000;
+    border-bottom: 1px solid #333333;
+    padding: 1rem 0;
+}
+
+header h1 {
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+nav a.nav-link {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+nav a.nav-link:hover {
+    color: #cccccc !important;
+}
+
+.welcome {
+    margin: 3rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modules .card {
+    background-color: #1f1f1f;
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    color: #ffffff;
+}
+
+.modules .card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modules .card-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.modules .card-text {
+    color: #b3b3b3;
+}
+
+.modules .btn {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.modules .btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.interest-selection {
+    margin-top: 3rem;
+}
+
+.interest-selection h3 {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.interest-selection .form-check-label {
+    color: #b3b3b3;
+}
+
+.interest-selection .btn {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.interest-selection .btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.max-selection-alert {
+    display: none;
+    color: #ff0000;
+    margin-top: 0.5rem;
+}
+
+footer {
+    background-color: #000000;
+    color: #666666;
+    padding: 1rem 0;
+    text-align: center;
+    border-top: 1px solid #333333;
+    margin-top: 3rem;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+}
+
+header {
+    background-color: #000000;
+    border-bottom: 1px solid #333333;
+    padding: 1rem 0;
+}
+
+header h1 {
+    font-weight: 300;
+    letter-spacing: 2px;
+}
+
+nav a.nav-link {
+    color: #ffffff !important;
+    transition: color 0.3s ease;
+}
+
+nav a.nav-link:hover {
+    color: #cccccc !important;
+}
+
+.welcome {
+    margin: 3rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modules .card {
+    background-color: #1f1f1f;
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    color: #ffffff;
+}
+
+.modules .card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+}
+
+.modules .card-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.modules .card-text {
+    color: #b3b3b3;
+}
+
+.modules .btn {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.modules .btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.interest-selection {
+    margin-top: 3rem;
+}
+
+.interest-selection h3 {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.interest-selection .form-check-label {
+    color: #b3b3b3;
+}
+
+.interest-selection .btn {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.interest-selection .btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.max-selection-alert {
+    display: none;
+    color: #ff0000;
+    margin-top: 0.5rem;
+}
+
+footer {
+    background-color: #000000;
+    color: #666666;
+    padding: 1rem 0;
+    text-align: center;
+    border-top: 1px solid #333333;
+    margin-top: 3rem;
+}
+
+.job-board {
+    margin-top: 3rem;
+}
+
+.job-board .card {
+    background-color: #1f1f1f;
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    color: #ffffff;
+}
+
+.job-board .card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+}
+
+.job-board .card-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.job-board .btn {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.job-board .btn:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #000000;
+    color: #666666;
+    padding: 2rem 0;
+    text-align: center;
+    border-top: 1px solid #333333;
+    margin-top: 3rem;
+}
+
+.footer-top {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #333333;
+}
+
+.footer-top .footer-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.footer-top .footer-links {
+    margin-bottom: 1rem;
+}
+
+.footer-top .footer-links a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.footer-top .footer-links a:hover {
+    color: #cccccc;
+}
+
+.newsletter-form {
+    margin: 1rem 0;
+}
+
+.newsletter-form input[type="email"] {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #333333;
+    background-color: #1f1f1f;
+    color: #ffffff;
+}
+
+.newsletter-form button {
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.newsletter-form button:hover {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.footer-bottom {
+    font-size: 0.875rem;
+}
+
+.footer-bottom .social-media {
+    margin-bottom: 1rem;
+}
+
+.footer-bottom .social-media a {
+    color: #ffffff;
+    margin: 0 0.5rem;
+    font-size: 1.25rem;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom .social-media a:hover {
+    color: #cccccc;
+}
+
+.footer-bottom .legal-links {
+    margin-top: 1rem;
+}
+
+.footer-bottom .legal-links a {
+    color: #666666;
+    text-decoration: none;
+    margin: 0 0.5rem;
+}
+
+.footer-bottom .legal-links a:hover {
+    color: #ffffff;
+}

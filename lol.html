@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board</title>
+    <link rel="stylesheet" href="styles/lol.css">
+</head>
+<body>
+    <div class="flex flex-col min-h-screen">
+        <header class="header">
+            <div class="container">
+                <a class="logo" href="#">Job Board</a>
+                <nav class="navigation">
+                    <a class="nav-link" href="#">Browse Jobs</a>
+                    <a class="nav-link" href="#">Post a Job</a>
+                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="#">Contact</a>
+                </nav>
+                <button class="post-job-btn">Post a Job</button>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="hero-section">
+                <div class="container text-center">
+                    <h1 class="hero-title">Find your dream job</h1>
+                    <p class="hero-description">Search through thousands of job listings and find the perfect opportunity for you.</p>
+                    <form class="search-form">
+                        <input class="search-input" placeholder="Job title, keywords, or company" type="text">
+                        <button class="search-button">Search</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="jobs-section">
+                <div class="container">
+                    <h2 class="section-title">Featured Jobs</h2>
+                    <div class="jobs-grid">
+                        <div class="job-card">
+                            <h3 class="job-title">Software Engineer</h3>
+                            <p class="job-company">Acme Inc.</p>
+                            <p class="job-description">We are looking for an experienced software engineer to join our team and help build our next-generation platform.</p>
+                            <div class="job-location">San Francisco, CA</div>
+                            <button class="apply-button">Apply Now</button>
+                        </div>
+                        <div class="job-card">
+                            <h3 class="job-title">Marketing Manager</h3>
+                            <p class="job-company">Globex Corporation</p>
+                            <p class="job-description">We are seeking a talented marketing manager to develop and execute our digital marketing strategy.</p>
+                            <div class="job-location">New York, NY</div>
+                            <button class="apply-button">Apply Now</button>
+                        </div>
+                        <div class="job-card">
+                            <h3 class="job-title">Product Designer</h3>
+                            <p class="job-company">Stark Industries</p>
+                            <p class="job-description">We are looking for a creative and user-focused product designer to join our design team.</p>
+                            <div class="job-location">Seattle, WA</div>
+                            <button class="apply-button">Apply Now</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+    color: #333;
+}
+header {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+.container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+h1 {
+    color: #4CAF50;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+input[type="text"], input[type="date"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+select, input[type="radio"] {
+    margin-bottom: 15px;
+}
+button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background: #45a049;
+}
+#message {
+    margin: 10px 0;
+    font-size: 16px;
+}
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lato', sans-serif;
+    background: linear-gradient(135deg, #a8edea, #fed6e3); /* Soft pastel gradient */
+    color: #333;
+    overflow-x: hidden;
+}
+
+header {
+    background-color: #6a89cc; /* Soft blue color */
+    color: #fff;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    animation: textFadeIn 1.5s ease-in-out;
+}
+
+@keyframes textFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+nav ul li a:hover {
+    background-color: #4a69bd; /* Slightly darker blue on hover */
+    transform: scale(1.05); /* Gentle hover effect */
+}
+
+main {
+    padding: 40px 20px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9); /* Soft white with transparency */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Gentle shadow */
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin: 40px auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+    transform: translateY(-5px); /* Subtle lift effect */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+}
+
+h1 {
+    font-size: 24px;
+    color: #444;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+form label {
+    font-size: 16px;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+form input[type="text"],
+form input[type="date"],
+form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="date"]:focus,
+form textarea:focus {
+    border-color: #78e08f; /* Soothing green on focus */
+    box-shadow: 0 0 8px rgba(120, 224, 143, 0.5); /* Soft green glow on focus */
+}
+
+form textarea {
+    resize: none;
+    min-height: 120px;
+}
+
+form button {
+    width: 100%;
+    padding: 15px;
+    background-color: #6a89cc; /* Soft blue button */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
+}
+
+form button:hover {
+    background-color: #4a69bd; /* Darker blue on hover */
+    transform: scale(1.03); /* Slight scale on hover */
+}
+
+form button:active {
+    transform: scale(1); /* Reset scale on click */
+}
+
+#message {
+    margin-top: 25px;
+    font-size: 16px;
+    color: #444;
+    text-align: center;
+    animation: textPulse 2s infinite; /* Slow pulsing text animation */
+}
+
+@keyframes textPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+footer {
+    background-color: #6a89cc; /* Soft blue footer */
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); /* Gentle shadow */
+    animation: footerSlideUp 0.5s ease-out;
+}
+
+@keyframes footerSlideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}

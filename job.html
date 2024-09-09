@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Job</title>
+    <link rel="stylesheet" href="css_styles/job.css">
+</head>
+<body>
+    <header>
+        <h1>Apply for Job</h1>
+    </header>
+    <div class="container">
+        <form id="applyForm">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <select id="age" required>
+                    <option value="" disabled selected>Select your age group</option>
+                    <option value="18-28">18 to 28</option>
+                    <option value="29-38">29 to 38</option>
+                    <option value="39+">39 or older</option>
+                </select>
+
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" placeholder="Enter your address" required>
+            </div>
+            <div class="form-group">
+                <label for="motivation">Motivation:</label>
+                <textarea id="motivation" rows="4" placeholder="Write your motivation" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="cv">Upload CV:</label>
+                <input type="file" id="cv" accept=".pdf,.doc,.docx" required>
+            </div>
+            <button type="submit" class="btn">Submit Application</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 Our Company. All rights reserved.</p>
+    </footer>
+
+    <!-- Firebase JS SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDpLstb5cYnI-Xv8JAla0iop0WaTdscU2M",
+            authDomain: "jobdatabase-3ff04.firebaseapp.com",
+            projectId: "jobdatabase-3ff04",
+            storageBucket: "jobdatabase-3ff04.appspot.com",
+            messagingSenderId: "274219241876",
+            appId: "1:274219241876:web:7166c3712c43d0af493f81",
+            measurementId: "G-MERSHYBGP5"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const firestore = getFirestore(app);
+
+        // Handle form submission
+        document.getElementById('applyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const address = document.getElementById('address').value;
+            const motivation = document.getElementById('motivation').value;
+            const cv = document.getElementById('cv').files[0];
+
+            if (!cv) {
+                alert('Please upload your CV.');
+                return;
+            }
+
+            try {
+                // Store the form data in Firestore
+                await addDoc(collection(firestore, 'jobApplications'), {
+                    name: name,
+                    age: age,
+                    address: address,
+                    motivation: motivation,
+                    cvName: cv.name,
+                    cvSize: cv.size,
+                    timestamp: new Date()
+                });
+
+                alert('Application submitted successfully!');
+                document.getElementById('applyForm').reset();
+            } catch (error) {
+                console.error('Error adding document: ', error);
+                alert('Failed to submit the application.');
+            }
+        });
+    </script>
+</body>
+</html>

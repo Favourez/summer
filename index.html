@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="css_styles/index.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Our Platform</h1>
+        <div class="slider">
+            <div class="slides">
+                <img src="assets/download (2).jpeg" alt="Image 1" class="active">
+                <img src="assets/download (1).jpeg" alt="Image 2">
+                <img src="assets/images.png" alt="Image 3">
+                <img src="assets/download.jpeg" alt="Image 4">
+                <img src="assets/image.jpeg" alt="Image 5">
+            </div>
+        </div>
+        <div class="buttons">
+            <a href="logopt.html" class="btn">Login</a>
+            <a href="signopt.html" class="btn">Sign Up</a>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slides img');
+        let currentIndex = 0;
+
+        function showNextImage() {
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % slides.length;
+            slides[currentIndex].classList.add('active');
+        }
+
+        setInterval(showNextImage, 3000); 
+    </script>
+</body>
+</html>
